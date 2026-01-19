@@ -37,8 +37,7 @@ Set up a cloud-based development environment and generate a Java web application
 - Maven and Java environment configured successfully
 - Web application generated and validated in the instance
 
-### Read More (Comprehensive Report - PDF)
-- [Part 1 Report (PDF)](Documentation/Day1-DevOps.pdf)
+- [Read More](Documentation/Day1-DevOps.md)
 
 ---
 
@@ -66,8 +65,7 @@ Connect the web application to GitHub for version control and enable remote repo
 - Source code version history established and trackable
 - PAT-based secure authentication enabled for future CI/CD stages
 
-### Read More (Comprehensive Report - PDF)
-- [Part 2 Report (PDF)](Documentation/Day2-DevOps.pdf)
+- [Read More](Documentation/Day2-DevOps.md)
 
 ---
 
@@ -105,8 +103,7 @@ Securely manage and consume project dependencies through a private artifact repo
 - Maven authentication and dependency retrieval working correctly
 - CodeArtifact enabled secure dependency management for the pipeline
 
-### Read More (Comprehensive Report - PDF)
-- [Part 3 Report (PDF)](Documentation/Day3-DevOps.pdf)
+- [Read More](Documentation/Day3-DevOps.md)
 
 ---
 
@@ -142,8 +139,7 @@ Automate build and packaging of the Java web application using AWS CodeBuild.
 - Build artifacts packaged and stored consistently in S3
 - Build logs enabled through CloudWatch for transparency
 
-### Read More (Comprehensive Report - PDF)
-- [Part 4 Report (PDF)](Documentation/Day4-DevOps.pdf)
+- [Read More](Documentation/Day4-DevOps.md)
 
 ---
 
@@ -180,8 +176,7 @@ Automate application deployment to EC2 using AWS CodeDeploy.
 - EC2 instance successfully received and deployed new application revisions
 - Deployment workflow ready for pipeline orchestration
 
-### Read More (Comprehensive Report - PDF)
-- [Part 5 Report (PDF)](Documentation/Day5-DevOps.pdf)
+- [Read More](Documentation/Day5-DevOps.md)
 
 ---
 
@@ -217,8 +212,7 @@ Convert the CI/CD infrastructure into reusable Infrastructure-as-Code using AWS 
 - Manual fixes implemented to resolve dependency and ordering issues
 - IaC template improved for reuse and portfolio demonstration
 
-### Read More (Comprehensive Report - PDF)
-- [Part 6 Report (PDF)](Documentation/Day6-DevOps.md)
+- [Read More](Documentation/Day6-DevOps.md)
 
 ---
 
@@ -263,8 +257,7 @@ Build a fully automated CI/CD pipeline that connects GitHub, CodeBuild, and Code
 
 - ![CodePipeline Execution Screenshot](Documentation/codepipeline-execution.png)
 
-### Read More (Comprehensive Report - PDF)
-- [Part 7 Report (PDF)](Documentation/Day7-DevOps.pdf)
+- [Read More](Documentation/Day7-DevOps.md)
 
 ---
 
