@@ -24,9 +24,9 @@ As this is Chapter 1, no prior chapter setup is required. However, ensure the fo
 
 - AWS account with management access
 - Administrative capability to create IAM users and EC2 instances
-- Local machine with internet connectivity
+- Mac with internet connectivity (macOS 10.12 or later)
 - Ability to download and manage files (.pem key files)
-- Administrator access on local machine for installing software
+- Administrator access on Mac for installing software
 
 ---
 
@@ -38,7 +38,7 @@ As this is Chapter 1, no prior chapter setup is required. However, ensure the fo
 | Amazon EC2 | Amazon Linux 2023 AMI |
 | Instance Type | t2.micro (eligible for free tier) |
 | Connectivity Protocol | SSH (Secure Shell) on Port 22 |
-| Code Editor | Visual Studio Code (Local) |
+| Code Editor | Visual Studio Code (macOS) |
 | Remote Extension | Remote - SSH Extension for VS Code |
 | Build Tool | Apache Maven 3.5.2 |
 | Java Runtime | Amazon Corretto 8 (JDK 1.8.0) |
@@ -104,19 +104,12 @@ Proper key pair management is critical for security. This step ensures your priv
    ls
    ```
 4. Set restricted permissions on the key file:
-   - **For macOS/Linux:**
-     ```bash
-     chmod 400 nextwork-keypair.pem
-     ```
-   - **For Windows (PowerShell as Administrator):**
-     ```powershell
-     icacls "nextwork-keypair.pem" /reset
-     icacls "nextwork-keypair.pem" /grant:r "${env:USERNAME}:R"
-     icacls "nextwork-keypair.pem" /inheritance:r
-     ```
+   ```bash
+   chmod 400 nextwork-keypair.pem
+   ```
 
 **Troubleshooting:**
-- **Error: Permission denied (publickey)** - Verify chmod/icacls permissions are correctly set and the filename matches exactly
+- **Error: Permission denied (publickey)** - Verify chmod permissions are correctly set and the filename matches exactly
 - **Connection refused** - Confirm the EC2 instance is in running state and the security group allows SSH from your IP address
 
 [SCREENSHOT: Terminal showing .pem file in DevOps folder with correct permissions]
@@ -133,6 +126,7 @@ SSH provides a secure encrypted connection to the remote EC2 instance, allowing 
    ```bash
    ssh -i ~/Desktop/DevOps/nextwork-keypair.pem ec2-user@<YOUR_PUBLIC_IPV4_DNS>
    ```
+   Example: `ssh -i ~/Desktop/DevOps/nextwork-keypair.pem ec2-user@ec2-13-239-113-205.ap-southeast-2.compute.amazonaws.com`
 3. When prompted about connecting to an unknown host, type `yes` to continue
 4. The terminal prompt should change to display `ec2-user@<IPv4_DNS>:~$` confirming successful connection
 
@@ -332,6 +326,8 @@ This step demonstrates editing files directly through the terminal using the nan
    ```
 9. Save by pressing Ctrl+S, then exit by pressing Ctrl+X
 
+   **Mac Keyboard Note:** On Mac keyboards, use the Control (Ctrl) key directly—there is no special mapping needed.
+
 **Verification:** Return to the Remote-SSH VS Code window and refresh (or check the file) to see the updated content. Both the local terminal and VS Code should display the same file content, confirming real-time synchronization.
 
 [SCREENSHOT: Nano editor showing the file being edited with the new line added]
@@ -344,7 +340,7 @@ Upon completion of this chapter, the following outputs are achieved:
 
 **Infrastructure Setup:**
 - Functional EC2 instance running Amazon Linux 2023 with public IP address
-- Secure SSH connectivity from local machine to EC2 instance
+- Secure SSH connectivity from Mac to EC2 instance
 - Key pair (.pem) file securely stored with appropriate permissions
 
 **Development Environment:**
