@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto8
+
+  pre_build:
+    commands:
+      - echo Logging in to AWS CodeArtifact...
+      - CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain network --domain-owner 508012525613 --region ap-south-1 --query authorizationToken --output text)
+      - export CODEARTIFACT_AUTH_TOKEN
+
+  build:
+    commands:
+      - echo "====== BEGINNING TEST PHASE ======"
+      - chmod +x run-tests.sh
+      - ./run-tests.sh
+      - echo "====== TEST PHASE COMPLETE ======"
+
+      - echo "====== BEGINNING BUILD PHASE ======"
+      - mvn -s settings.xml clean package
+      - echo "====== BUILD PHASE COMPLETE ======"
+
+artifacts:
+  files:
+    - target/nextwork-web-project.war
+    - appspec.yml
+    - scripts/**/*
+  discard-paths: no
