@@ -37,7 +37,7 @@ Set up a cloud-based development environment and generate a Java web application
 - Maven and Java environment configured successfully
 - Web application generated and validated in the instance
 
-- [Read More](Documentation/Day1-DevOps.md)
+To know more [Click Here](Documentation/Day1-DevOps.md)
 
 ---
 
@@ -65,7 +65,7 @@ Connect the web application to GitHub for version control and enable remote repo
 - Source code version history established and trackable
 - PAT-based secure authentication enabled for future CI/CD stages
 
-- [Read More](Documentation/Day2-DevOps.md)
+To know more [Click Here](Documentation/Day2-DevOps.md)
 
 ---
 
@@ -103,7 +103,7 @@ Securely manage and consume project dependencies through a private artifact repo
 - Maven authentication and dependency retrieval working correctly
 - CodeArtifact enabled secure dependency management for the pipeline
 
-- [Read More](Documentation/Day3-DevOps.md)
+To know more [Click Here](Documentation/Day3-DevOps.md)
 
 ---
 
@@ -139,7 +139,7 @@ Automate build and packaging of the Java web application using AWS CodeBuild.
 - Build artifacts packaged and stored consistently in S3
 - Build logs enabled through CloudWatch for transparency
 
-- [Read More](Documentation/Day4-DevOps.md)
+To know more [Click Here](Documentation/Day4-DevOps.md)
 
 ---
 
@@ -176,7 +176,7 @@ Automate application deployment to EC2 using AWS CodeDeploy.
 - EC2 instance successfully received and deployed new application revisions
 - Deployment workflow ready for pipeline orchestration
 
-- [Read More](Documentation/Day5-DevOps.md)
+To know more [Click Here](Documentation/Day5-DevOps.md)
 
 ---
 
@@ -212,7 +212,7 @@ Convert the CI/CD infrastructure into reusable Infrastructure-as-Code using AWS 
 - Manual fixes implemented to resolve dependency and ordering issues
 - IaC template improved for reuse and portfolio demonstration
 
-- [Read More](Documentation/Day6-DevOps.md)
+To know more [Click Here](Documentation/Day6-DevOps.md)
 
 ---
 
@@ -255,9 +255,9 @@ Build a fully automated CI/CD pipeline that connects GitHub, CodeBuild, and Code
 - Webhook-based deployments achieved with no manual intervention
 - Rollback capability tested successfully for reliability
 
-- ![CodePipeline Execution Screenshot](Documentation/codepipeline-execution.png)
+![CodePipeline Execution Screenshot](Documentation/codepipeline-execution.png)
 
-- [Read More](Documentation/Day7-DevOps.md)
+To know more [Click Here](Documentation/Day7-DevOps.md)
 
 ---
 
@@ -276,8 +276,6 @@ Build a fully automated CI/CD pipeline that connects GitHub, CodeBuild, and Code
 - Dependency management secured using CodeArtifact
 - Rollback procedures validated for production-level reliability
 
+![Successful CI/CD Output](Documentation/successful-cicd.png)
 
-- ![Successful CI/CD Output](Documentation/successful-cicd.png)
-
-
-- ![Deployed Web Application Output](Documentation/deployed-webapp.png)
+![Deployed Web Application Output](Documentation/deployed-webapp.png)
