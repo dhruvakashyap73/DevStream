@@ -1,328 +1,416 @@
-# 📌 Chapter 1: Set Up a Cloud Development Environment (EC2)
+# Chapter 1: Set Up a Cloud Development Environment (EC2)
 
-![Status](https://img.shields.io/badge/Status-Complete-brightgreen) ![Difficulty](https://img.shields.io/badge/Difficulty-Beginner-blue) ![AWS](https://img.shields.io/badge/AWS-EC2-orange) ![Tools](https://img.shields.io/badge/Tools-Maven%20%7C%20Java-red)
-
----
-
-## 🎯 Aim / Goal
-
-The goal of this chapter is to set up a complete cloud-based development environment using an Amazon EC2 instance. This environment will be used to build and manage a Java web application completely on the cloud, and it will act as the foundation for the upcoming CI/CD phases.
+**Status:** Complete | **Difficulty:** Beginner | **AWS Service:** EC2 | **Tools:** Maven, Java
 
 ---
 
-## 🏗️ Architecture (Chapter-Specific Diagram)
+## Aim / Goal
 
-
-Local system connects securely to EC2 using SSH, installs required build tools (Maven + Java), and generates the web project on the server.
-
----
-
-## ✅ Pre-requisites
-
-Since this is Chapter 1, there are no previous chapters required. However, ensure the following setup is completed in this phase:
-
-- ✅ AWS account access available
-- ✅ IAM user created and used instead of root user (recommended best practice)
-- ✅ EC2 Instance created and running
-- ✅ Key Pair (.pem) created and stored safely
-- ✅ Security Group allows SSH access (Port 22) only from your IP
-- ✅ VS Code installed on local machine
-- ✅ Remote-SSH extension installed and connected
-- ✅ Maven + Java installed on EC2
-- ✅ Web app generated successfully (BUILD SUCCESS)
+The goal of this chapter is to establish a complete cloud-based development environment using Amazon EC2. This environment serves as the foundation for building and managing a Java web application entirely on the cloud, preparing the infrastructure for the subsequent CI/CD pipeline implementation.
 
 ---
 
-## 🧰 Tech Stack Used
+## Architecture (Chapter-Specific Diagram)
 
-| Tool | Version/Details |
-|------|-----------------|
-| **AWS IAM** | IAM Admin User |
-| **Amazon EC2** | Amazon Linux 2023 AMI |
-| **SSH** | Secure remote login (Port 22) |
-| **VS Code** | IDE (Local) |
-| **Remote - SSH Extension** | VS Code plugin |
-| **Apache Maven** | Build tool |
-| **Amazon Corretto 8** | Java 8 Runtime |
-| **Nano Editor** | Terminal editor |
+This chapter focuses on setting up the foundational development infrastructure. The local development machine connects securely to an EC2 instance via SSH, where Apache Maven and Java are installed to enable building and generating the Java web application structure.
+
+[SCREENSHOT: Architecture diagram showing local system connecting to EC2 instance via SSH]
 
 ---
 
-## 🛠️ Step-by-Step Implementation
+## Prerequisites
 
-### ✅ Step 1: Log in using IAM User (not root)
+As this is Chapter 1, no prior chapter setup is required. However, ensure the following are available to proceed:
 
-**Action Items:**
-1. Create IAM user:
-   - Username: `IAM-Admin`
-   - Permissions: `AdministratorAccess`
-   - Download `.csv` file with login details
-2. Login using IAM Admin user from Console Sign-In URL
-
-**📸 Screenshots to include:**
-- [ ] IAM user created successfully
-- [ ] Logged in using IAM user
+- AWS account with management access
+- Administrative capability to create IAM users and EC2 instances
+- Local machine with internet connectivity
+- Ability to download and manage files (.pem key files)
+- Administrator access on local machine for installing software
 
 ---
 
-### ✅ Step 2: Launch an EC2 Instance
+## Tech Stack Used
 
-**Action Items:**
-1. Go to EC2 → Instances → Launch Instances
-2. Configure:
-   - **Name:** `nextwork-devops-`
+| Component | Version/Details |
+|-----------|-----------------|
+| AWS IAM | IAM Admin User with AdministratorAccess |
+| Amazon EC2 | Amazon Linux 2023 AMI |
+| Instance Type | t2.micro (eligible for free tier) |
+| Connectivity Protocol | SSH (Secure Shell) on Port 22 |
+| Code Editor | Visual Studio Code (Local) |
+| Remote Extension | Remote - SSH Extension for VS Code |
+| Build Tool | Apache Maven 3.5.2 |
+| Java Runtime | Amazon Corretto 8 (JDK 1.8.0) |
+| Terminal Editor | Nano |
+
+---
+
+## Step-by-Step Implementation
+
+### Step 1: Create and Configure IAM User
+
+AWS recommends using IAM users instead of the root account for everyday tasks. This step establishes a dedicated IAM user with administrative permissions for this project.
+
+**Procedure:**
+1. Log into AWS Management Console as the root user
+2. Navigate to IAM console and select Users from the left panel
+3. Click Create user and enter username: `IAM-Admin`
+4. Enable console access and set a custom password
+5. Deselect the option requiring password change at next sign-in
+6. Attach the AdministratorAccess policy directly
+7. Download the .csv file containing login credentials
+8. Copy and store the Console sign-in URL
+9. Log out from root user and log in using the new IAM user credentials
+
+[SCREENSHOT: IAM user creation confirmation screen]
+
+---
+
+### Step 2: Launch EC2 Instance
+
+The EC2 instance serves as the cloud-based development and application server. This step creates and configures the virtual machine.
+
+**Procedure:**
+1. Navigate to EC2 console in AWS Management Console
+2. Select Instances and click Launch instances
+3. Configure the following settings:
+   - **Name:** nextwork-devops-
    - **AMI:** Amazon Linux 2023
-   - **Instance Type:** `t2.micro`
-3. Create Key Pair:
-   - **Name:** `nextwork-keypair`
+   - **Instance Type:** t2.micro
+4. Create a new key pair:
+   - **Name:** nextwork-keypair
    - **Type:** RSA
    - **Format:** .pem
-4. Network Settings:
-   - Allow SSH from: **My IP**
+5. In Network settings, set Allow SSH traffic from to My IP (or Custom with your specific IP/32)
+6. Review and launch the instance
 
-**📸 Screenshots to include:**
-- [ ] EC2 instance running
-- [ ] Key pair created
-- [ ] Security group rules (SSH from My IP)
+**Important Note:** Immediately download and secure the .pem file. This file is your private key and cannot be recovered after creation.
 
----
-
-### ✅ Step 3: Store .pem File and Update Permissions
-
-**Action Items:**
-1. Create a folder on desktop: `DevOps`
-2. Move `nextwork-keypair.pem` into: `~/Desktop/DevOps/`
-3. Run inside VS Code terminal:
-
-```bash
-cd ~/Desktop/DevOps
-ls
-chmod 400 nextwork-keypair.pem
-```
-
-**📸 Screenshots to include:**
-- [ ] .pem present inside DevOps folder
-- [ ] `chmod` command output
-
-**🔧 Troubleshooting:**
-> **Error:** Permission denied (publickey)
-> 
-> **Fix Checklist:**
-> - Confirm .pem file name matches
-> - Ensure permissions are correct: `chmod 400 nextwork-keypair.pem`
-> - Verify Security Group allows SSH (port 22) from your IP
-> - If your IP changed, update inbound rule
+[SCREENSHOT: EC2 instance successfully launched and running]
 
 ---
 
-### ✅ Step 4: Connect to EC2 via SSH
+### Step 3: Store and Secure the Key Pair
 
-**Action Items:**
-1. Copy EC2 Public IPv4 DNS
-2. Run this command:
+Proper key pair management is critical for security. This step ensures your private key has appropriate permissions.
 
-```bash
-ssh -i ~/Desktop/DevOps/nextwork-keypair.pem ec2-user@<YOUR_PUBLIC_IPV4_DNS>
-```
+**Procedure:**
+1. Create a folder on your desktop named `DevOps`
+2. Move the downloaded `nextwork-keypair.pem` file into `~/Desktop/DevOps/`
+3. Open VS Code terminal and navigate to the folder:
+   ```bash
+   cd ~/Desktop/DevOps
+   ls
+   ```
+4. Set restricted permissions on the key file:
+   - **For macOS/Linux:**
+     ```bash
+     chmod 400 nextwork-keypair.pem
+     ```
+   - **For Windows (PowerShell as Administrator):**
+     ```powershell
+     icacls "nextwork-keypair.pem" /reset
+     icacls "nextwork-keypair.pem" /grant:r "${env:USERNAME}:R"
+     icacls "nextwork-keypair.pem" /inheritance:r
+     ```
 
-3. Type `yes` when prompted.
+**Troubleshooting:**
+- **Error: Permission denied (publickey)** - Verify chmod/icacls permissions are correctly set and the filename matches exactly
+- **Connection refused** - Confirm the EC2 instance is in running state and the security group allows SSH from your IP address
 
-**📸 Screenshots to include:**
-- [ ] Successful SSH connection showing `ec2-user@...`
-
-**🔧 Troubleshooting:**
-> **Error:** Operation timed out
-> 
-> **Fix Checklist:**
-> - Check instance is running
-> - Confirm security group SSH rule
-> - Confirm correct IP address is allowed
+[SCREENSHOT: Terminal showing .pem file in DevOps folder with correct permissions]
 
 ---
 
-### ✅ Step 5: Install Apache Maven on EC2
+### Step 4: Connect to EC2 Instance via SSH
 
-**Action Items:**
-Run the following commands:
+SSH provides a secure encrypted connection to the remote EC2 instance, allowing command execution from your local terminal.
 
-```bash
-wget https://archive.apache.org/dist/maven/maven-3/3.5.2/binaries/apache-maven-3.5.2-bin.tar.gz
-sudo tar -xzf apache-maven-3.5.2-bin.tar.gz -C /opt
-echo "export PATH=/opt/apache-maven-3.5.2/bin:$PATH" >> ~/.bashrc
-source ~/.bashrc
-```
+**Procedure:**
+1. In AWS Console, select your EC2 instance and note the Public IPv4 DNS (example: ec2-13-239-113-205.ap-southeast-2.compute.amazonaws.com)
+2. In VS Code terminal, execute:
+   ```bash
+   ssh -i ~/Desktop/DevOps/nextwork-keypair.pem ec2-user@<YOUR_PUBLIC_IPV4_DNS>
+   ```
+3. When prompted about connecting to an unknown host, type `yes` to continue
+4. The terminal prompt should change to display `ec2-user@<IPv4_DNS>:~$` confirming successful connection
 
-**If wget is missing:**
+**Verification:** The terminal prefix changes from your local machine name to the EC2 instance identifier.
+
+[SCREENSHOT: Terminal showing successful SSH connection with ec2-user@ prompt]
+
+---
+
+### Step 5: Install Apache Maven
+
+Apache Maven is a build automation and dependency management tool essential for Java web application development. Maven also provides archetypes (project templates) that accelerate project setup.
+
+**Procedure:**
+1. From the SSH-connected terminal, execute:
+   ```bash
+   wget https://archive.apache.org/dist/maven/maven-3/3.5.2/binaries/apache-maven-3.5.2-bin.tar.gz
+   sudo tar -xzf apache-maven-3.5.2-bin.tar.gz -C /opt
+   echo "export PATH=/opt/apache-maven-3.5.2/bin:$PATH" >> ~/.bashrc
+   source ~/.bashrc
+   ```
+
+**If wget is not available:**
 ```bash
 sudo yum install wget -y
 ```
+Then re-execute the Maven installation commands.
 
-**📸 Screenshots to include:**
-- [ ] Maven installation commands executed
+**Expected Duration:** 30-45 seconds for download and extraction
 
----
-
-### ✅ Step 6: Install Java 8 (Amazon Corretto 8)
-
-**Action Items:**
-Run the following commands:
-
-```bash
-sudo dnf install -y java-1.8.0-amazon-corretto-devel
-export JAVA_HOME=/usr/lib/jvm/java-1.8.0-amazon-corretto.x86_64
-export PATH=/usr/lib/jvm/java-1.8.0-amazon-corretto.x86_64/jre/bin/:$PATH
-```
-
-**📸 Screenshots to include:**
-- [ ] Java installation output
+[SCREENSHOT: Maven installation output in terminal]
 
 ---
 
-### ✅ Step 7: Verify Installations
+### Step 6: Install Amazon Corretto 8 (Java)
 
-**Action Items:**
-Run:
+Amazon Corretto 8 is a free, open-source Java Development Kit required for Maven and Java web application execution.
 
-```bash
-mvn -v
-java -version
-```
+**Procedure:**
+1. Execute the following commands:
+   ```bash
+   sudo dnf install -y java-1.8.0-amazon-corretto-devel
+   export JAVA_HOME=/usr/lib/jvm/java-1.8.0-amazon-corretto.x86_64
+   export PATH=/usr/lib/jvm/java-1.8.0-amazon-corretto.x86_64/jre/bin/:$PATH
+   ```
+2. The terminal will display installation progress and verification output
 
-**🔧 Troubleshooting (Java version mismatch):**
+**Java Version Management:**
+If multiple Java versions exist, select the correct one with:
 ```bash
 sudo alternatives --config java
 ```
 
-**📸 Screenshots to include:**
-- [ ] Maven version output
-- [ ] Java version output showing `1.8`
+[SCREENSHOT: Java installation confirmation output]
 
 ---
 
-### ✅ Step 8: Generate Java Web App Using Maven
+### Step 7: Verify Maven and Java Installation
 
-**Action Items:**
-Run:
+Verification ensures both tools are correctly installed and accessible from any directory.
 
-```bash
-mvn archetype:generate \
-   -DgroupId=com.nextwork.app \
-   -DartifactId=nextwork-web-project \
-   -DarchetypeArtifactId=maven-archetype-webapp \
-   -DinteractiveMode=false
-```
+**Procedure:**
+1. Check Maven version:
+   ```bash
+   mvn -v
+   ```
+   Expected output includes Apache Maven version 3.5.2 and Java version.
 
-**Expected Output:** `BUILD SUCCESS`
+2. Check Java version:
+   ```bash
+   java -version
+   ```
+   Expected output should display openjdk version 1.8.0.
 
-**📸 Screenshots to include:**
-- [ ] BUILD SUCCESS message
+**Troubleshooting:**
+- **mvn command not found** - Re-run the Maven installation commands and source ~/.bashrc
+- **Java version mismatch** - Use `sudo alternatives --config java` to select Java 1.8.0
 
----
-
-### ✅ Step 9: Connect VS Code to EC2 (Remote SSH)
-
-**Action Items:**
-1. Install extension: **Remote - SSH**
-2. Add SSH host:
-```
-ssh -i ~/Desktop/DevOps/nextwork-keypair.pem ec2-user@<YOUR_PUBLIC_IPV4_DNS>
-```
-3. Open folder in remote session: `/home/ec2-user/nextwork-web-project`
-
-**📸 Screenshots to include:**
-- [ ] Remote SSH connected (bottom left shows SSH)
-- [ ] Project opened in VS Code explorer
+[SCREENSHOT: Output of both mvn -v and java -version showing correct versions]
 
 ---
 
-### ✅ Step 10: Edit index.jsp from VS Code
+### Step 8: Generate Java Web Application
 
-**Action Items:**
-1. Open `index.jsp` in VS Code
-2. Replace content with:
+Maven's archetype generator creates a standardized web application project structure, eliminating manual setup of directories and configuration files.
 
-```html
-<html>
-<body>
-<h2>Hello !</h2>
-<p>This is my NextWork web application working!</p>
-</body>
-</html>
-```
+**Procedure:**
+1. Execute the following command:
+   ```bash
+   mvn archetype:generate \
+      -DgroupId=com.nextwork.app \
+      -DartifactId=nextwork-web-project \
+      -DarchetypeArtifactId=maven-archetype-webapp \
+      -DinteractiveMode=false
+   ```
 
-3. Save using: `Ctrl + S` / `Cmd + S`
+2. Maven will download dependencies and generate the project structure. This process takes 1-2 minutes.
 
-**📸 Screenshots to include:**
-- [ ] Updated `index.jsp` file
+3. Look for `BUILD SUCCESS` message at the end of the output. This confirms successful project generation.
 
----
+**Project Structure Created:**
+- `src/main/webapp/` - Web application files (HTML, JSP)
+- `src/main/resources/` - Configuration files
+- `pom.xml` - Maven Project Object Model configuration
 
-### ✅ Step 11 (Secret Mission): Edit index.jsp using Terminal (Nano)
-
-**Action Items:**
-1. Navigate to:
-```bash
-cd ~/nextwork-web-project/src/main/webapp
-nano index.jsp
-```
-
-2. Add this line to the file:
-```html
-<p>I am writing this line using nano instead of an IDE.</p>
-```
-
-3. Save + Exit:
-   - `Ctrl + S`
-   - `Ctrl + X`
-
-**📸 Screenshots to include:**
-- [ ] Nano editor screen
-- [ ] Final file showing the new line
+[SCREENSHOT: BUILD SUCCESS message from Maven archetype generation]
 
 ---
 
-## ✅ Outputs
+### Step 9: Install VS Code Remote-SSH Extension
 
-By the end of this chapter, the following outputs are achieved:
+The Remote-SSH extension allows VS Code to directly connect to the EC2 instance, providing full IDE features (syntax highlighting, file navigation, integrated editing) on remote files.
 
-- ✅ IAM Admin user created and used successfully
-- ✅ EC2 instance launched and running
-- ✅ Secure SSH connection established from local system to EC2
-- ✅ VS Code installed and connected to EC2 via Remote SSH
-- ✅ Apache Maven installed and verified (`mvn -v`)
-- ✅ Java 8 (Amazon Corretto 8) installed and verified (`java -version`)
-- ✅ Java web app generated successfully using Maven (BUILD SUCCESS)
-- ✅ `index.jsp` edited using both VS Code IDE + nano (terminal editor)
+**Procedure:**
+1. On your local machine, open VS Code
+2. Click the Extensions icon in the left sidebar
+3. Search for "Remote - SSH" by Microsoft
+4. Click Install
+
+**Post-Installation Setup:**
+1. Click the Remote explorer button (double arrows) at the bottom left of VS Code
+2. Select "Connect to Host..."
+3. Select "+ Add New SSH Host..."
+4. Enter the SSH command:
+   ```bash
+   ssh -i ~/Desktop/DevOps/nextwork-keypair.pem ec2-user@<YOUR_PUBLIC_IPV4_DNS>
+   ```
+5. Select the SSH config file location (typically `~/.ssh/config`)
+6. The "Host added!" popup confirms successful configuration
+
+[SCREENSHOT: VS Code with Remote-SSH extension showing successful connection to EC2 instance]
 
 ---
 
-## 📚 Key Takeaways
+### Step 10: Open Project in Remote VS Code
 
-1. **Cloud Development Environment Setup:** Established a complete development environment on AWS EC2
-2. **Infrastructure as Code Mindset:** Used cloud services for scalable development
-3. **SSH Security:** Practiced secure remote connection using key pairs
-4. **Build Tools Mastery:** Installed and configured Maven and Java
-5. **Web Application Generation:** Created a Maven-based Java web project from archetypes
+Once connected, VS Code can access and edit files directly on the EC2 instance.
+
+**Procedure:**
+1. From the Remote explorer (bottom left), select your EC2 instance and click Connect
+2. A new VS Code window opens connected to the EC2 instance
+3. Click the Explorer icon (file icon) in the left sidebar
+4. Click "Open Folder"
+5. Enter the path: `/home/ec2-user/nextwork-web-project`
+6. Click OK
+7. If prompted about trusting the folder, click "Yes, I trust the authors"
+
+**Verification:** The file explorer displays the project structure with folders including src/, target/, and files like pom.xml and index.jsp.
 
 ---
 
-## 🔗 Navigation
+### Step 11: Edit index.jsp via VS Code IDE
+
+The index.jsp file is the entry point of the web application. This step demonstrates using VS Code's IDE features to edit application code.
+
+**Procedure:**
+1. In the file explorer, expand src/ → main/ → webapp/
+2. Click index.jsp to open it in the editor
+3. Replace the entire file content with:
+   ```html
+   <html>
+   <body>
+   <h2>Hello !</h2>
+   <p>This is my NextWork web application working!</p>
+   </body>
+   </html>
+   ```
+4. Save the file using Ctrl+S (Windows/Linux) or Cmd+S (macOS)
+
+**Verification:** The file tab shows no dot indicator after saving, confirming changes are persisted.
+
+[SCREENSHOT: VS Code editor showing updated index.jsp content]
+
+---
+
+### Step 12: Edit index.jsp via Terminal (Nano)
+
+This step demonstrates editing files directly through the terminal using the nano editor, which is useful when IDE access is unavailable.
+
+**Procedure:**
+1. Switch from the Remote-SSH VS Code window to your original local VS Code window
+2. Ensure your terminal still shows the SSH connection (prompt displays `ec2-user@...`)
+3. If disconnected, re-run the SSH command from your DevOps folder
+4. Navigate to the webapp directory:
+   ```bash
+   cd ~/nextwork-web-project/src/main/webapp
+   ```
+5. Open the file in nano:
+   ```bash
+   nano index.jsp
+   ```
+6. Using keyboard navigation, find the line containing `<p>This is my NextWork web application working!</p>`
+7. Move to the end of that line and press Enter to create a new line
+8. Type:
+   ```html
+   <p>I am writing this line using nano instead of an IDE.</p>
+   ```
+9. Save by pressing Ctrl+S, then exit by pressing Ctrl+X
+
+**Verification:** Return to the Remote-SSH VS Code window and refresh (or check the file) to see the updated content. Both the local terminal and VS Code should display the same file content, confirming real-time synchronization.
+
+[SCREENSHOT: Nano editor showing the file being edited with the new line added]
+
+---
+
+## Outputs
+
+Upon completion of this chapter, the following outputs are achieved:
+
+**Infrastructure Setup:**
+- Functional EC2 instance running Amazon Linux 2023 with public IP address
+- Secure SSH connectivity from local machine to EC2 instance
+- Key pair (.pem) file securely stored with appropriate permissions
+
+**Development Environment:**
+- VS Code installed locally with Remote-SSH extension configured
+- Remote development connection established to EC2 instance
+- Terminal access via SSH providing command-line interface to EC2 instance
+
+**Build Tools:**
+- Apache Maven 3.5.2 installed and verified (mvn -v output visible)
+- Amazon Corretto 8 Java Runtime installed and verified (java -version output visible)
+- Environment variables configured for tool accessibility from any directory
+
+**Application Artifact:**
+- Java web application project structure generated successfully
+- Project naming: nextwork-web-project with correct groupId (com.nextwork.app)
+- index.jsp file created and edited via both VS Code IDE and nano terminal editor
+- BUILD SUCCESS confirmation from Maven archetype generation
+
+**Documentation:**
+- Screenshots capturing key milestones (EC2 instance creation, SSH connection, VS Code connection)
+- Command outputs demonstrating successful tool installations
+- Updated application code showing modifications made via both IDE and terminal
+
+---
+
+## Key Technical Concepts Covered
+
+1. **IAM User Management** - Created non-root administrative user following AWS security best practices
+2. **EC2 Instance Configuration** - Launched and configured virtual machine with appropriate AMI, instance type, and security settings
+3. **SSH Key Pair Management** - Generated, secured, and applied private key with correct file permissions
+4. **SSH Protocol** - Established encrypted secure connection to remote server using public key cryptography
+5. **Package Management** - Installed and configured Apache Maven for Java project automation
+6. **Java Runtime** - Installed Java Development Kit (Corretto 8) enabling Java code compilation and execution
+7. **IDE Remote Development** - Configured VS Code to connect to and edit files on remote EC2 instance
+8. **Terminal-Based File Editing** - Used nano text editor to edit files directly via SSH terminal connection
+9. **Maven Archetypes** - Generated standardized project structure from Maven templates
+
+---
+
+## Navigation
 
 | Previous | Current | Next |
 |----------|---------|------|
-| — | **Chapter 1: EC2 Setup** | [Chapter 2: Build & Deploy](../Ch2_BuildAndDeploy/README.md) |
+| — | **Chapter 1: EC2 Setup** | Chapter 2: Build & Deploy |
 
 ---
 
-## 📝 Notes
+## Important Notes
 
-- Always use IAM users instead of root account for security best practices
-- Store your `.pem` file securely and never commit it to version control
-- Monitor AWS costs by stopping EC2 instances when not in use
-- Update security groups based on your current IP address for SSH access
+- Always use IAM users instead of root account for security best practices and auditability
+- Store the .pem file securely and never commit it to version control systems
+- The .pem file cannot be recovered after creation; maintain a secure backup
+- Ensure your current IP address is allowed in the security group SSH rule
+- Monitor AWS account for running instances to avoid unexpected charges
+- If IP address changes, update the EC2 security group inbound rule for continued SSH access
+
+---
+
+## Full Project Documentation
+
+[SPACE RESERVED FOR PDF DOCUMENTATION]
+
+This section will contain complete project documentation including screenshots, detailed step descriptions, and troubleshooting guides.
 
 ---
 
 **Last Updated:** January 19, 2026  
-**Status:** Complete ✅  
-**Difficulty Level:** Beginner 🟢
+**Chapter Status:** Complete  
+**Difficulty Level:** Beginner
