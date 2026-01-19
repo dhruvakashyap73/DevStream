@@ -260,8 +260,6 @@ Build a fully automated CI/CD pipeline that connects GitHub, CodeBuild, and Code
 - Fully automated CI/CD pipeline created using CodePipeline
 - Webhook-based deployments achieved with no manual intervention
 - Rollback capability tested successfully for reliability
-
-### Pipeline Screenshot Links
 - ![CodePipeline Execution Screenshot](Documentation/codepipeline-execution.png)
 
 ### Read More (Comprehensive Report - PDF)
@@ -283,7 +281,5 @@ Build a fully automated CI/CD pipeline that connects GitHub, CodeBuild, and Code
 - Infrastructure reproducible through CloudFormation templates
 - Dependency management secured using CodeArtifact
 - Rollback procedures validated for production-level reliability
-
-### Final Proof Screenshots
 - ![Successful CI/CD Output](Documentation/successful-cicd.png)
 - ![Deployed Web Application Output](Documentation/deployed-webapp.png)
