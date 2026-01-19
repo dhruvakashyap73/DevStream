@@ -14,7 +14,7 @@ The goal of this chapter is to establish a complete cloud-based development envi
 
 This chapter focuses on setting up the foundational development infrastructure. The local development machine connects securely to an EC2 instance via SSH, where Apache Maven and Java are installed to enable building and generating the Java web application structure.
 
-[SCREENSHOT: Architecture diagram showing local system connecting to EC2 instance via SSH]
+![Architecture diagram showing local system connecting to EC2 instance via SSH](Resources/1.0.png)
 
 ---
 
@@ -63,7 +63,7 @@ AWS recommends using IAM users instead of the root account for everyday tasks. T
 8. Copy and store the Console sign-in URL
 9. Log out from root user and log in using the new IAM user credentials
 
-[SCREENSHOT: IAM user creation confirmation screen]
+![IAM user creation confirmation screen](Resources/2.0.png)
 
 ---
 
@@ -87,7 +87,7 @@ The EC2 instance serves as the cloud-based development and application server. T
 
 **Important Note:** Immediately download and secure the .pem file. This file is your private key and cannot be recovered after creation.
 
-[SCREENSHOT: EC2 instance successfully launched and running]
+![EC2 instance successfully launched and running](Resources/3.0.png)
 
 ---
 
@@ -112,8 +112,6 @@ Proper key pair management is critical for security. This step ensures your priv
 - **Error: Permission denied (publickey)** - Verify chmod permissions are correctly set and the filename matches exactly
 - **Connection refused** - Confirm the EC2 instance is in running state and the security group allows SSH from your IP address
 
-[SCREENSHOT: Terminal showing .pem file in DevOps folder with correct permissions]
-
 ---
 
 ### Step 4: Connect to EC2 Instance via SSH
@@ -131,8 +129,6 @@ SSH provides a secure encrypted connection to the remote EC2 instance, allowing 
 4. The terminal prompt should change to display `ec2-user@<IPv4_DNS>:~$` confirming successful connection
 
 **Verification:** The terminal prefix changes from your local machine name to the EC2 instance identifier.
-
-[SCREENSHOT: Terminal showing successful SSH connection with ec2-user@ prompt]
 
 ---
 
@@ -157,7 +153,6 @@ Then re-execute the Maven installation commands.
 
 **Expected Duration:** 30-45 seconds for download and extraction
 
-[SCREENSHOT: Maven installation output in terminal]
 
 ---
 
@@ -179,8 +174,6 @@ If multiple Java versions exist, select the correct one with:
 ```bash
 sudo alternatives --config java
 ```
-
-[SCREENSHOT: Java installation confirmation output]
 
 ---
 
@@ -204,8 +197,6 @@ Verification ensures both tools are correctly installed and accessible from any 
 **Troubleshooting:**
 - **mvn command not found** - Re-run the Maven installation commands and source ~/.bashrc
 - **Java version mismatch** - Use `sudo alternatives --config java` to select Java 1.8.0
-
-[SCREENSHOT: Output of both mvn -v and java -version showing correct versions]
 
 ---
 
@@ -232,8 +223,6 @@ Maven's archetype generator creates a standardized web application project struc
 - `src/main/resources/` - Configuration files
 - `pom.xml` - Maven Project Object Model configuration
 
-[SCREENSHOT: BUILD SUCCESS message from Maven archetype generation]
-
 ---
 
 ### Step 9: Install VS Code Remote-SSH Extension
@@ -257,7 +246,7 @@ The Remote-SSH extension allows VS Code to directly connect to the EC2 instance,
 5. Select the SSH config file location (typically `~/.ssh/config`)
 6. The "Host added!" popup confirms successful configuration
 
-[SCREENSHOT: VS Code with Remote-SSH extension showing successful connection to EC2 instance]
+![VS Code with Remote-SSH extension showing successful connection to EC2 instance](Resources/4.0.png)
 
 ---
 
@@ -298,7 +287,6 @@ The index.jsp file is the entry point of the web application. This step demonstr
 
 **Verification:** The file tab shows no dot indicator after saving, confirming changes are persisted.
 
-[SCREENSHOT: VS Code editor showing updated index.jsp content]
 
 ---
 
@@ -329,8 +317,6 @@ This step demonstrates editing files directly through the terminal using the nan
    **Mac Keyboard Note:** On Mac keyboards, use the Control (Ctrl) key directly—there is no special mapping needed.
 
 **Verification:** Return to the Remote-SSH VS Code window and refresh (or check the file) to see the updated content. Both the local terminal and VS Code should display the same file content, confirming real-time synchronization.
-
-[SCREENSHOT: Nano editor showing the file being edited with the new line added]
 
 ---
 
@@ -384,7 +370,7 @@ Upon completion of this chapter, the following outputs are achieved:
 
 | Previous | Current | Next |
 |----------|---------|------|
-| — | **Chapter 1: EC2 Setup** | Chapter 2: Build & Deploy |
+| — | **Chapter 1: EC2 Setup** | Chapter 2: Connecting GitHub |
 
 ---
 
@@ -401,9 +387,9 @@ Upon completion of this chapter, the following outputs are achieved:
 
 ## Full Project Documentation
 
-[SPACE RESERVED FOR PDF DOCUMENTATION]
+Complete project documentation with detailed instructions, screenshots, and troubleshooting guides:
 
-This section will contain complete project documentation including screenshots, detailed step descriptions, and troubleshooting guides.
+[Day 1 DevOps Setup - Complete Documentation (PDF)](Resources/Day1-DevOps.pdf)
 
 ---
 
