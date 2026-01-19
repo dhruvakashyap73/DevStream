@@ -1,6 +1,6 @@
 # Chapter 1: Set Up a Cloud Development Environment (EC2)
 
-**Status:** Complete | **Difficulty:** Beginner | **AWS Service:** EC2 | **Tools:** Maven, Java
+**Difficulty:** Beginner | **AWS Service:** EC2 | **Tools:** Maven, Java
 
 ---
 
